@@ -46,7 +46,7 @@ class MyCloneable implements Cloneable{
 
 public class Main {
     public static void main(String[] args) {
-        try {
+        /*try {
             System.out.println("Test 1 starts");
             test1();
         }catch (Exception e){
@@ -54,28 +54,57 @@ public class Main {
         }finally {
             System.out.println("Test 1 done");
             System.out.println("--------------------------------------------");
-        }
+        }*/
+        IsraeliQueue<Integer> queue = new IsraeliQueue<>();
+        queue.add(1);
+        queue.add(2);
+        queue.add(3);
+        queue.add(4,8);
+        queue.add(5,6);
+        queue.add(6,2);
+        queue.add(7,1);
+        queue.add(8,1);
     }
 
-    public static void test1(){
-        IsraeliQueue<MyCloneable> queue = new IsraeliQueue<>();
-        queue.add(new MyCloneable(1));
-        queue.add(new MyCloneable(2));
-        queue.add(new MyCloneable(3));
-
-        IsraeliQueue<MyCloneable> clonedQueue = queue.clone();
-
-        Iterator<MyCloneable> iterator = queue.iterator();
-        Iterator<MyCloneable> clonedIterator = clonedQueue.iterator();
-
-        while (iterator.hasNext() && clonedIterator.hasNext()){
-            MyCloneable fromOrg = iterator.next();
-            MyCloneable fromCloned = clonedIterator.next();
-
-            System.out.println(fromOrg);
-            System.out.println(fromCloned);
-            System.out.println(fromOrg.equals(fromCloned));
-            System.out.println(fromOrg == fromCloned);
-        }
-    }
+//    public static void test1(){
+//        IsraeliQueue<MyCloneable> queue = new IsraeliQueue<>();
+//        queue.add(new MyCloneable(1));
+//        queue.add(new MyCloneable(2));
+//        queue.add(new MyCloneable(3));
+//
+//        IsraeliQueue<MyCloneable> clonedQueue = queue.clone();
+//
+//        Iterator<MyCloneable> iterator = queue.iterator();
+//        Iterator<MyCloneable> clonedIterator = clonedQueue.iterator();
+//
+//        while (iterator.hasNext() && clonedIterator.hasNext()){
+//            MyCloneable fromOrg = iterator.next();
+//            MyCloneable fromCloned = clonedIterator.next();
+//
+//            System.out.println(fromOrg);
+//            System.out.println(fromCloned);
+//            System.out.println(fromOrg.equals(fromCloned));
+//            System.out.println(fromOrg == fromCloned);
+//        }
+//    }
 }
+
+
+/*
+1. super park with rides.
+
+2. up to 5 rides to pay property tax
+
+3. every ride has a name, queue of people and max for simultaneously use
+
+4. a. every individual has I.D and friend.
+
+4. b. individuals are equal if their I.D is the same.
+
+5. individuals can enter the queue of a certain ride and will proceed until they can enter the ride.
+
+6. we use data structure that implies queue in order to let the people in the ride and out.
+
+ */
+
+
