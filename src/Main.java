@@ -55,15 +55,25 @@ public class Main {
             System.out.println("Test 1 done");
             System.out.println("--------------------------------------------");
         }*/
-        IsraeliQueue<Integer> queue = new IsraeliQueue<>();
-        queue.add(1);
-        queue.add(2);
-        queue.add(3);
-        queue.add(4,8);
-        queue.add(5,6);
-        queue.add(6,2);
-        queue.add(7,1);
-        queue.add(8,1);
+        IsraeliQueue<MyCloneable> queue = new IsraeliQueue<>();
+        queue.add(new MyCloneable(1));
+        queue.add(new MyCloneable(2));
+        queue.add(new MyCloneable(3));
+        queue.add(new MyCloneable(4),new MyCloneable(8));
+        queue.add(new MyCloneable(5),new MyCloneable(6));
+        queue.add(new MyCloneable(6),new MyCloneable(2));
+        queue.add(new MyCloneable(7),new MyCloneable(1));
+        queue.add(new MyCloneable(8),new MyCloneable(1));
+        IsraeliQueue<MyCloneable> cloned = queue.clone();
+        queue.
+        queue.remove();
+        queue.remove();
+        queue.remove();
+        queue.remove();
+        queue.remove();
+        queue.remove();
+        queue.remove();
+        queue.remove();
     }
 
 //    public static void test1(){

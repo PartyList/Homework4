@@ -1,4 +1,4 @@
-public class Node<E>{
+public class Node<E extends Cloneable> implements Cloneable{
     private E value;
     private Node<E> next;
     public Node(E value, Node<E> next) {
@@ -30,5 +30,25 @@ public class Node<E>{
         if (this.next == null)
             return false;
         return next.isContained(other);
+    }
+
+    @Override
+    protected Node<E> clone() throws CloneNotSupportedException {
+        try {
+            Node<E> clone = (Node<E>) super.clone();
+            Node<E> head = new Node<>(clone.getValue());
+            Node<E> tail = head;
+            while (clone.getNext() != null) {
+                tail.setNext(new Node<>(clone.getNext().getValue()));
+                tail = tail.getNext();
+                clone = clone.getNext();
+            }
+            return head;
+        }
+        catch (CloneNotSupportedException e) {
+            return null;
+        }
+
+
     }
 }
