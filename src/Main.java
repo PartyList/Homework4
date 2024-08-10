@@ -55,6 +55,8 @@ public class Main {
             System.out.println("Test 1 done");
             System.out.println("--------------------------------------------");
         }*/
+
+        Cloneable s = new MyCloneable(1);
         IsraeliQueue<MyCloneable> queue = new IsraeliQueue<>();
         queue.add(new MyCloneable(1));
         queue.add(new MyCloneable(2));
@@ -65,7 +67,7 @@ public class Main {
         queue.add(new MyCloneable(7),new MyCloneable(1));
         queue.add(new MyCloneable(8),new MyCloneable(1));
         IsraeliQueue<MyCloneable> cloned = queue.clone();
-        queue.
+        Cloneable [] hello = {s};
         queue.remove();
         queue.remove();
         queue.remove();

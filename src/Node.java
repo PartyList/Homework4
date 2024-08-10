@@ -48,7 +48,7 @@ public class Node<E extends Cloneable> implements Cloneable{
         catch (CloneNotSupportedException e) {
             return null;
         }
-
-
     }
+
+
 }
