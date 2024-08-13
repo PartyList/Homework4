@@ -38,31 +38,18 @@ public class Node<E extends Cloneable> implements Cloneable{
     @Override
     protected Node<E> clone() {
         try {
-
-
             Node<E> cloned = (Node<E>) super.clone();
-            if(this.value instanceof Node<?>)
-                cloned.value = (E) (((Node<?>) this.value).clone());
+            if(this.value instanceof Node)
+                cloned.value = (E) (((Node<E>) this.value).clone());
             else
                 cloned.value = (E) (this.value).getClass().getMethod("clone").invoke(value);
-            System.out.println((value.getClass().getMethod("clone")));
             if(cloned.next != null){
                 cloned.next = this.next.clone();
             }
             return cloned;
-//            clone.value = cloned_value;
-//            Node<E> cloned_next = clone.next;
-//            Node<E> temp = ;
-//            while(cloned_next != null){
-//                cloned_value = (E) value.getClass().getMethod("clone").invoke(cloned_next.value);
-//                cloned_next.setNext(new Node<E>(cloned_value));
-//                cloned_next = cloned_next.next;
-//            }
-
         }
         catch(Exception e){
             // As required to return null in case of any exception.
-            System.out.println(e);
             return null;
         }
 

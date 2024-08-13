@@ -1,4 +1,7 @@
-public class IsraeliQueue<T extends Cloneable> implements Cloneable{
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
+public class IsraeliQueue<T extends Cloneable> implements Cloneable, Iterable<T>{
     /**
      * attributes - head,tail, size
      * methods: add1,add2,remove,peek,size,clone.
@@ -53,7 +56,6 @@ public class IsraeliQueue<T extends Cloneable> implements Cloneable{
 
 
 
-
     public void add(T data){
         Node<Node<T>> temp_group = this.groups;
         if(temp_group == null){
@@ -101,7 +103,9 @@ public class IsraeliQueue<T extends Cloneable> implements Cloneable{
 
         }
 
-        public T remove(){
+
+
+    public T remove(){
             T result = null;
             if(groups != null){
                 T removedHead = head.getValue();
@@ -139,29 +143,61 @@ public class IsraeliQueue<T extends Cloneable> implements Cloneable{
                 cloned_tail = cloned_tail.getNext();
             }
             clone.tail = cloned_tail;
+            clone.groups = this.groups.clone();
 
-
-            Node<T> temp_node = (Node<T>) clone.groups.getValue();
-            Node<Node<T>> temp_groups = new Node<Node<T>>(temp_node.clone());
-            Node<Node<T>> temp_groups_head = temp_groups;
-            clone.groups = clone.groups.getNext();
-            while(clone.groups != null){
-                temp_node = (Node<T>) clone.groups.getValue();
-                temp_groups.setNext(new Node<Node<T>>(temp_node.clone()));
-                temp_groups = temp_groups.getNext();
-                clone.groups = clone.groups.getNext();
-            }
-            clone.groups = temp_groups_head;
-//           clone.groups = this.groups.clone();
             return clone;
 
         } catch (Exception e) {
             // As required to return null in case of any exception.
-            System.out.println(e);
             return null;
         }
     }
 
+
+    @Override
+    public Iterator<T> iterator() {
+        return new Iterator<T>(){
+            private Node<T> currentNode = head;
+
+            @Override
+            public boolean hasNext() {
+                return currentNode != null;
+            }
+
+            @Override
+            public T next() {
+                if (hasNext()) {
+                    T data = currentNode.getValue();
+                    currentNode = currentNode.getNext();
+                    return data;
+                }
+                return null;
+            }
+        };
+    }
+
+//    private class QueueIterator implements Iterator<T> {
+//        private Node<T> currentNode;
+//
+//        public QueueIterator() {
+//            currentNode = head;
+//        }
+//
+//        @Override
+//        public boolean hasNext() {
+//            return currentNode != null;
+//        }
+//
+//        @Override
+//        public T next() {
+//            if (hasNext()) {
+//                T data = currentNode.getValue();
+//                currentNode = currentNode.getNext();
+//                return data;
+//            }
+//            return null;
+//        }
+//    }
 
 }
 
