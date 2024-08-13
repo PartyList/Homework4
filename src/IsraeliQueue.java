@@ -19,6 +19,7 @@ public class IsraeliQueue<T extends Cloneable> implements Cloneable{
         this.size = 0;
     }
 
+
     public void add(T data,T friend){
         Node<Node<T>> temp_group = this.groups;
         if(temp_group == null)
@@ -128,51 +129,41 @@ public class IsraeliQueue<T extends Cloneable> implements Cloneable{
 
     @Override
     public IsraeliQueue<T> clone() {
-        IsraeliQueue<T> result;
         try {
             IsraeliQueue clone = (IsraeliQueue<T>) super.clone();
             // TODO: copy mutable state here, so the clone can't change the internals of the original
-            clone.updateHeadTail();
-            Node<Node<T>> groups_head = clone.groups.clone();
-            Node<Node<T>> groups_tail = groups_head;
-            while(groups_tail != null){
-                groups_tail.setValue(groups_tail.getValue().clone());
-                groups_tail = groups_tail.getNext();
+            clone.head = clone.head.clone();
+
+            Node<T> cloned_tail = clone.head;
+            while(cloned_tail.getNext().getNext() != null){
+                cloned_tail = cloned_tail.getNext();
+            }
+            clone.tail = cloned_tail;
+
+
+            Node<T> temp_node = (Node<T>) clone.groups.getValue();
+            Node<Node<T>> temp_groups = new Node<Node<T>>(temp_node.clone());
+            Node<Node<T>> temp_groups_head = temp_groups;
+            temp_groups = temp_groups.getNext();
+            clone.groups = clone.groups.getNext();
+            while(clone.groups != null){
+                temp_node = (Node<T>) clone.groups.getValue();
+                temp_groups = new Node<Node<T>>(temp_node.clone());
+                temp_groups = temp_groups.getNext();
+                clone.groups = clone.groups.getNext();
             }
 
-            clone.groups = groups_head;
-
-//            Node<Node<T>> temp_groups = this.groups;
-//            this.head = null;
-//            this.tail = null;
-//            if(temp_groups != null) {
-//                while(temp_groups != null){
-//                    Node<T> temp_node = temp_groups.getValue();
-//
-//                    while(temp_node != null){
-//                        if(this.head == null){
-//                            this.head = new Node<>(temp_groups.getValue().getValue());
-//                            this.tail = this.head;
-//                        }
-//                        else{
-//                            Node<T> next_node = new Node<>(temp_node.getValue());
-//                            tail.setNext(next_node);
-//                            tail = tail.getNext();
-//                        }
-//                        temp_node = temp_node.getNext();
-//                    }
-//                    temp_groups = temp_groups.getNext();
-//                }
-//            }
-
-
-
+//           clone.groups = this.groups.clone();
             return clone;
-        } catch (CloneNotSupportedException e) {
-            //throw new AssertionError();
+
+        } catch (Exception e) {
+            // As required to return null in case of any exception.
+            System.out.println(e);
             return null;
         }
     }
+
+
 }
 
 
