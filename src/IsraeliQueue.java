@@ -144,15 +144,14 @@ public class IsraeliQueue<T extends Cloneable> implements Cloneable{
             Node<T> temp_node = (Node<T>) clone.groups.getValue();
             Node<Node<T>> temp_groups = new Node<Node<T>>(temp_node.clone());
             Node<Node<T>> temp_groups_head = temp_groups;
-            temp_groups = temp_groups.getNext();
             clone.groups = clone.groups.getNext();
             while(clone.groups != null){
                 temp_node = (Node<T>) clone.groups.getValue();
-                temp_groups = new Node<Node<T>>(temp_node.clone());
+                temp_groups.setNext(new Node<Node<T>>(temp_node.clone()));
                 temp_groups = temp_groups.getNext();
                 clone.groups = clone.groups.getNext();
             }
-
+            clone.groups = temp_groups_head;
 //           clone.groups = this.groups.clone();
             return clone;
 
