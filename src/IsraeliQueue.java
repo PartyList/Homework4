@@ -1,14 +1,6 @@
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 
-public class IsraeliQueue<T extends Cloneable> implements Cloneable, Iterable<T>{
-    /**
-     * attributes - head,tail, size
-     * methods: add1,add2,remove,peek,size,clone.
-     * implies Iterable, IsraeliQueueException
-     *
-     */
-
+public class IsraeliQueue<T extends Cloneable> implements Cloneable, Iterable<T> {
     private Node<T> head;
     private Node<T> tail;
     private Node<Node<T>> groups;
@@ -22,49 +14,55 @@ public class IsraeliQueue<T extends Cloneable> implements Cloneable, Iterable<T>
         this.size = 0;
     }
 
-
-    public void add(T data,T friend){
-        Node<Node<T>> temp_group = this.groups;
-        if(temp_group == null)
-            add(data);
-        else{
-        while(temp_group.getNext() != null ){
-            if (temp_group.getValue().isContained(friend)){
-                Node<T> temp_node = temp_group.getValue();
-                while(temp_node.getNext() != null){
-                    temp_node = temp_node.getNext();
-                }
-                Node <T> data_node = new Node<>(data);
-                temp_node.setNext(data_node);
-                size++;
-                break;
-            }
-            else{
-                temp_group = temp_group.getNext();
-            }
-
+    /**
+     * adds a new person that has a friend to the IsraeliQueue based on the definition.
+     *
+     * @param data
+     * @param friend
+     * @throws InvalidInputException in case of a null data.
+     */
+    public void add(T data, T friend) throws InvalidInputException {
+        if (data == null) {
+            throw new InvalidInputException();
         }
-            if(temp_group.getNext() == null)
-                add(data);
-            else{
-                updateHeadTail();
+        Node<Node<T>> temp_group = this.groups; // temp group to iterate and find the friend
+        if (temp_group == null) // the group is empty so there are no friends in it.
+            add(data);
+        else {
+            while (temp_group.getNext() != null) {
+                if (temp_group.getValue().isContained(friend)) {
+                    //friend has found. add the person to be the last in this group
+                    Node<T> temp_node = temp_group.getValue();
+                    while (temp_node.getNext() != null) {
+                        temp_node = temp_node.getNext();
+                    }
+                    Node<T> data_node = new Node<>(data);
+                    temp_node.setNext(data_node);
+                    size++; // added new data.
+                    updateHeadTail(); //this is required as groups and head/tail are different.
+                    return;
+                } else {
+                    temp_group = temp_group.getNext();
+                }
             }
+            //didn't find the friend, normal add.
+            if (temp_group.getNext() == null)
+                add(data);
+        }
     }
-    }
 
 
-
-
-
-    public void add(T data){
+    public void add(T data) throws InvalidInputException {
+        if (data == null) {
+            throw new InvalidInputException();
+        }
         Node<Node<T>> temp_group = this.groups;
-        if(temp_group == null){
+        if (temp_group == null) {
             Node<T> new_val = new Node<>(data);
             Node<Node<T>> new_group = new Node<>(new_val);
             this.groups = new_group;
 
-        }
-        else {
+        } else {
             while (temp_group.getNext() != null) {
                 temp_group = temp_group.getNext();
             }
@@ -77,69 +75,84 @@ public class IsraeliQueue<T extends Cloneable> implements Cloneable, Iterable<T>
         size++;
     }
 
-    private void updateHeadTail(){
+    /**
+     * This method updates the head and the tail after adding a new data to the queue.
+     */
+    private void updateHeadTail() {
+        //Initialize
         Node<Node<T>> temp_groups = this.groups;
         this.head = null;
         this.tail = null;
-        if(temp_groups != null) {
-            while(temp_groups != null){
+        if (temp_groups != null) { // if groups is null, there is nothing to update.
+            //get the first value in the first group of groups.
+            this.head = new Node<>(temp_groups.getValue().getValue());
+            this.tail = this.head;
+            while (temp_groups != null) {
                 Node<T> temp_node = temp_groups.getValue();
-
-                while(temp_node != null){
-                    if(this.head == null){
-                        this.head = new Node<>(temp_groups.getValue().getValue());
-                        this.tail = this.head;
-                    }
-                    else{
+                while (temp_node != null) {
+                    //update tail until groups is null.
                     Node<T> next_node = new Node<>(temp_node.getValue());
                     tail.setNext(next_node);
                     tail = tail.getNext();
-                    }
                     temp_node = temp_node.getNext();
                 }
                 temp_groups = temp_groups.getNext();
             }
         }
-
-        }
-
+    }
 
 
-    public T remove(){
-            T result = null;
-            if(groups != null){
-                T removedHead = head.getValue();
-                if(groups.getValue().getNext() == null){
-                    groups = groups.getNext();
-                }
-                else{
-                    groups.setValue(groups.getValue().getNext());
-                }
-                updateHeadTail();
-                result = removedHead;
+    /**
+     * This method removes the first person from the Queue and returns the new head of the queue.
+     *
+     * @return T
+     */
+    public T remove() {
+        T result = null; // to return the new head after removing
+        if (groups != null) {
+            T removedHead = head.getValue();
+            if (groups.getValue().getNext() == null) {
+                groups = groups.getNext();
+            } else {
+                //Taiyo I think this should be deleted and replaced with Empty exception.
+                groups.setValue(groups.getValue().getNext());
             }
-            return result;
+            updateHeadTail();
+            result = removedHead;
         }
+        return result;
+    }
 
-        public T peek(){
-            if(this.head == null){
-                //EmptyQueueException
-            }
-            return head.getValue();
+    /**
+     * This method returns the head without removing
+     *
+     * @return T the head of the queue.
+     */
+    public T peek() {
+        if (this.head == null) {
+            //EmptyQueueException
         }
+        return head.getValue();
+    }
 
-        public int size(){ return this.size; }
+    public int size() {
+        return this.size;
+    }
 
-
+    /**
+     * Deep copy of IsraeliQueue by using the clone in node.
+     *
+     * @return IsraeliQueue<T>
+     */
     @Override
     public IsraeliQueue<T> clone() {
         try {
             IsraeliQueue clone = (IsraeliQueue<T>) super.clone();
-            // TODO: copy mutable state here, so the clone can't change the internals of the original
-            clone.head = clone.head.clone();
+            clone.head = clone.head.clone(); // clones the whole linklist
 
             Node<T> cloned_tail = clone.head;
-            while(cloned_tail.getNext().getNext() != null){
+            //finds the tail of the linklist.
+            while (cloned_tail.getNext().getNext() != null) {
                 cloned_tail = cloned_tail.getNext();
             }
             clone.tail = cloned_tail;
@@ -156,7 +169,7 @@ public class IsraeliQueue<T extends Cloneable> implements Cloneable, Iterable<T>
 
     @Override
     public Iterator<T> iterator() {
-        return new Iterator<T>(){
+        return new Iterator<T>() {
             private Node<T> currentNode = head;
 
             @Override
@@ -199,8 +212,8 @@ public class IsraeliQueue<T extends Cloneable> implements Cloneable, Iterable<T>
 //        }
 //    }
 
-}
 
+}
 
 /*
  Node class representing each element in the queue
