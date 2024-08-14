@@ -128,6 +128,7 @@ public class IsraeliQueue<T extends Cloneable> implements Cloneable, Iterable<T>
             return head.getValue();
         }
 
+        
         public int size(){ return this.size; }
 
 
