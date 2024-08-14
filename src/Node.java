@@ -1,12 +1,15 @@
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-public class Node<E extends Cloneable> implements Cloneable{
+public class Node<E extends Cloneable> implements Cloneable {
     private E value;
     private Node<E> next;
+
     public Node(E value, Node<E> next) {
-        this.value= value;this.next= next;
+        this.value = value;
+        this.next = next;
     }
+
     public Node(E value) {
         this(value, null);
     }
@@ -20,14 +23,14 @@ public class Node<E extends Cloneable> implements Cloneable{
     }
 
     public void setValue(E value) {
-        this.value= value;
+        this.value = value;
     }
 
     public void setNext(Node<E> next) {
-        this.next= next;
+        this.next = next;
     }
 
-    public boolean isContained(E other){
+    public boolean isContained(E other) {
         if (this.value.equals(other))
             return true;
         if (this.next == null)
@@ -35,20 +38,31 @@ public class Node<E extends Cloneable> implements Cloneable{
         return next.isContained(other);
     }
 
+    /**
+     * This method deep copy the Node by using recursion.
+     *
+     * @return Node<E>
+     */
     @Override
     protected Node<E> clone() {
         try {
+            //creating instance
             Node<E> cloned = (Node<E>) super.clone();
-            if(this.value instanceof Node)
+
+            //we use Node of Nodes, so it is required to check and act differently.
+            //in any case it is recursive for deep copy
+            if (this.value instanceof Node)
+                // no invoking because it is a Node.
                 cloned.value = (E) (((Node<E>) this.value).clone());
             else
                 cloned.value = (E) (this.value).getClass().getMethod("clone").invoke(value);
-            if(cloned.next != null){
+
+            // recursion stop condition
+            if (cloned.next != null) {
                 cloned.next = this.next.clone();
             }
             return cloned;
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             // As required to return null in case of any exception.
             return null;
         }
