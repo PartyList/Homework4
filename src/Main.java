@@ -73,6 +73,9 @@ public class Main {
         queue.remove();
         queue.remove();
         queue.remove();
+        queue.peek();
+
+
 
         try {
             System.out.println("Test 1 starts");

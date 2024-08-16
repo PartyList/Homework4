@@ -78,27 +78,29 @@ public class IsraeliQueue<T extends Cloneable> implements Cloneable, Iterable<T>
     /**
      * This method updates the head and the tail after adding a new data to the queue.
      */
-    private void updateHeadTail() {
-        //Initialize
+    private void updateHeadTail(){
         Node<Node<T>> temp_groups = this.groups;
         this.head = null;
         this.tail = null;
-        if (temp_groups != null) { // if groups is null, there is nothing to update.
-            //get the first value in the first group of groups.
-            this.head = new Node<>(temp_groups.getValue().getValue());
-            this.tail = this.head;
-            while (temp_groups != null) {
+        if(temp_groups != null) {
+            while(temp_groups != null){
                 Node<T> temp_node = temp_groups.getValue();
-                while (temp_node != null) {
-                    //update tail until groups is null.
-                    Node<T> next_node = new Node<>(temp_node.getValue());
-                    tail.setNext(next_node);
-                    tail = tail.getNext();
+                while(temp_node != null){
+                    if(this.head == null){
+                        this.head = new Node<>(temp_groups.getValue().getValue());
+                        this.tail = this.head;
+                    }
+                    else{
+                        Node<T> next_node = new Node<>(temp_node.getValue());
+                        tail.setNext(next_node);
+                        tail = tail.getNext();
+                    }
                     temp_node = temp_node.getNext();
                 }
                 temp_groups = temp_groups.getNext();
             }
         }
+
     }
 
 
@@ -107,7 +109,7 @@ public class IsraeliQueue<T extends Cloneable> implements Cloneable, Iterable<T>
      *
      * @return T
      */
-    public T remove() {
+    public T remove() throws EmptyQueueException {
         T result = null; // to return the new head after removing
         if (groups != null) {
             T removedHead = head.getValue();
@@ -117,8 +119,10 @@ public class IsraeliQueue<T extends Cloneable> implements Cloneable, Iterable<T>
                 //Taiyo I think this should be deleted and replaced with Empty exception.
                 groups.setValue(groups.getValue().getNext());
             }
-            updateHeadTail();
+            this.head = this.head.getNext();
             result = removedHead;
+        } else {
+            throw new EmptyQueueException("An error occurred while trying to remove an element from the queue.");
         }
         return result;
     }
@@ -130,7 +134,7 @@ public class IsraeliQueue<T extends Cloneable> implements Cloneable, Iterable<T>
      */
     public T peek() {
         if (this.head == null) {
-            //EmptyQueueException
+            throw new EmptyQueueException("An error occurred while trying to remove an element from the queue.");
         }
         return head.getValue();
     }
