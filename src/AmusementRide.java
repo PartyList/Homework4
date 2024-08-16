@@ -20,7 +20,8 @@ public class AmusementRide {
         else {
             Iterator<Person> iterator = PeopleQueue.iterator();
             System.out.println("Currently using the ride:");
-            while (size >= 0 && iterator.hasNext()) {
+            while (size > 0 && iterator.hasNext()) {
+                PeopleQueue.remove();
                 Person per = iterator.next();
                 System.out.println(per.toString());
                 size--;
@@ -28,5 +29,9 @@ public class AmusementRide {
         }
 
 
+    }
+
+    public void addPerson(Person person) {
+        PeopleQueue.add(person,person.getFriend());
     }
 }

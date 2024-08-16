@@ -1,9 +1,9 @@
 public class Person implements Cloneable {
     private final String name;
-    private final String ID;
+    private final int ID;
     private final Person friend;
 
-    public Person(String name, String ID, Person friend) {
+    public Person(String name, int ID, Person friend) {
         this.name = name;
         this.ID = ID;
         this.friend = friend;
@@ -28,7 +28,7 @@ public class Person implements Cloneable {
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof Person) {
-            return this.ID.equals(((Person) obj).ID);
+            return this.ID == (((Person) obj).ID);
         }
         return false;
 
@@ -43,5 +43,9 @@ public class Person implements Cloneable {
     @Override
     public Person clone() {
         return new Person(name, ID, friend);
+    }
+
+    public Person getFriend() {
+        return friend;
     }
 }

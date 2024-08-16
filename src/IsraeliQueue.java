@@ -120,6 +120,7 @@ public class IsraeliQueue<T extends Cloneable> implements Cloneable, Iterable<T>
                 groups.setValue(groups.getValue().getNext());
             }
             this.head = this.head.getNext();
+            this.size--;
             result = removedHead;
         } else {
             throw new EmptyQueueException("An error occurred while trying to remove an element from the queue.");
@@ -134,7 +135,7 @@ public class IsraeliQueue<T extends Cloneable> implements Cloneable, Iterable<T>
      */
     public T peek() {
         if (this.head == null) {
-            throw new EmptyQueueException("An error occurred while trying to remove an element from the queue.");
+            throw new EmptyQueueException("An error occurred while trying to peek an element from the queue.");
         }
         return head.getValue();
     }
