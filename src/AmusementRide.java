@@ -15,9 +15,11 @@ public class AmusementRide {
      */
     public void startRide() {
         int size = Math.min(actionCapacity, PeopleQueue.size());
+        //checks if there are people in the queue for the ride.
         if (size <= 0)
             System.out.println("Ride is empty.");
         else {
+            //goes through each turn in the queue and starts the ride.
             Iterator<Person> iterator = PeopleQueue.iterator();
             System.out.println("Currently using the ride:");
             while (size > 0 && iterator.hasNext()) {

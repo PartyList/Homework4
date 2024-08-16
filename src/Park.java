@@ -42,7 +42,7 @@ public class Park {
      *
      */
     public void startRides(){
-
+        //goes through all the existing rides and start each of them.
         for (int i = 0; i < rides.length; i++) {
             if (this.rides[i] != null) {
                 this.rides[i].startRide();
@@ -57,6 +57,7 @@ public class Park {
      * @param person
      */
     public void addPerson(AmusementRide amusement, Person person){
+        //goes through all the rides looks for the specified one and add the person accordingly.
         for (int i = 0; i < rides.length; i++) {
             if (this.rides[i] != null && this.rides[i].equals(amusement)) {
                 this.rides[i].addPerson(person);

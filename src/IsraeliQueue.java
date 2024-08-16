@@ -51,9 +51,14 @@ public class IsraeliQueue<T extends Cloneable> implements Cloneable, Iterable<T>
         }
     }
 
-
+    /**
+     * Creates a new groups with the new person and adds to the end of the list.
+     *
+     * @param data
+     * @throws InvalidInputException
+     */
     public void add(T data) throws InvalidInputException {
-        if (data == null) {
+        if (data == null) {//Looks if the input is valid.
             throw new InvalidInputException();
         }
         Node<Node<T>> temp_group = this.groups;
@@ -77,23 +82,25 @@ public class IsraeliQueue<T extends Cloneable> implements Cloneable, Iterable<T>
 
     /**
      * This method updates the head and the tail after adding a new data to the queue.
+     * It does this by creating a new linked list.
      */
     private void updateHeadTail(){
-        Node<Node<T>> temp_groups = this.groups;
+        Node<Node<T>> temp_groups = this.groups; //the first group
         this.head = null;
         this.tail = null;
-        if(temp_groups != null) {
+        if(temp_groups != null) {//checks if there's any group to copy.
             while(temp_groups != null){
-                Node<T> temp_node = temp_groups.getValue();
-                while(temp_node != null){
-                    if(this.head == null){
-                        this.head = new Node<>(temp_groups.getValue().getValue());
-                        this.tail = this.head;
-                    }
-                    else{
+                Node<T> temp_node = temp_groups.getValue(); //gets the group head.
+                while(temp_node != null){//looks for the next person in the group.
+                    if(this.head != null){//We just continue the linkedList using the tail.
                         Node<T> next_node = new Node<>(temp_node.getValue());
                         tail.setNext(next_node);
                         tail = tail.getNext();
+
+                    }
+                    else{//if the head is null it means we need to set a starting point for the linked list.
+                        this.head = new Node<>(temp_groups.getValue().getValue());
+                        this.tail = this.head;
                     }
                     temp_node = temp_node.getNext();
                 }
@@ -113,10 +120,10 @@ public class IsraeliQueue<T extends Cloneable> implements Cloneable, Iterable<T>
         T result = null; // to return the new head after removing
         if (groups != null) {
             T removedHead = head.getValue();
-            if (groups.getValue().getNext() == null) {
+            //Looks if there's any friend left in the group.
+            if (groups.getValue().getNext() == null) {//We want to go to the next group.
                 groups = groups.getNext();
-            } else {
-                //Taiyo I think this should be deleted and replaced with Empty exception.
+            } else { //sets the group the next person to be the head of the group.
                 groups.setValue(groups.getValue().getNext());
             }
             this.head = this.head.getNext();
